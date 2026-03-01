@@ -100,10 +100,28 @@ func maskOrEmpty(v string) string {
 	return v[:4] + "..." + v[len(v)-4:]
 }
 
+// resolveEnv returns the value of the first non-empty environment variable from the given names.
+func resolveEnv(names ...string) string {
+	for _, name := range names {
+		if v := os.Getenv(name); v != "" {
+			return v
+		}
+	}
+	return ""
+}
+
 // resolveCredentials returns a token, expiry, and optional refresh function.
 func resolveCredentials() (string, int64, api.RefreshFunc, error) {
 	// 1. Direct env var (no refresh capability)
-	if token := os.Getenv("GDRIVE_ACCESS_TOKEN"); token != "" {
+	if token := resolveEnv(
+		"GDRIVE_ACCESS_TOKEN",
+		"GDRIVE_TOKEN",
+		"GOOGLE_DRIVE_TOKEN",
+		"GDRIVE_BEARER_TOKEN",
+		"GOOGLE_DRIVE_ACCESS_TOKEN",
+		"GDRIVE_ACCESS",
+		"TOKEN_GDRIVE",
+	); token != "" {
 		return token, 0, nil, nil
 	}
 
