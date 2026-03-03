@@ -39,11 +39,14 @@ gdrive files list
 
 **Auth commands:**
 ```bash
-gdrive auth login       # Browser OAuth flow
-gdrive auth set-token <token>  # Save token directly
-gdrive auth status      # Show current auth status
-gdrive auth logout      # Remove saved credentials
+gdrive auth login                  # Browser OAuth flow
+gdrive auth login --no-browser     # Manual flow for remote/VPS
+gdrive auth set-token <token>      # Save token directly
+gdrive auth status                 # Show current auth status
+gdrive auth logout                 # Remove saved credentials
 ```
+
+With `--no-browser`: the CLI prints the OAuth URL. Open it in a local browser, authorize, then copy the full redirect URL from the address bar and paste it into the terminal (the page will fail to load — that's expected).
 
 ## Global Flags
 
